@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volta Machinery | Powering Ghana's Industrial Growth</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-olive: #6b7a47;
+            --dark-olive: #3d462c;
+            --charcoal: #1a1a1a;
+            --black: #0f0f0f;
+            --silver: #e0e0e0;
+            --engirise-red: #ED1C24;
+            --bolt-yellow: #fdfd96;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--black); 
+            color: white; 
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .oswald { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- STICKY TOP BAR --- */
+        .top-bar {
+            background: #000;
+            color: var(--silver);
+            font-size: 12px;
+            padding: 8px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+            border-bottom: 1px solid #222;
+        }
+        .engirise-badge { background: var(--engirise-red); color: white; padding: 2px 8px; font-weight: bold; margin-left: 5px; }
+
+        /* --- NAVBAR --- */
+        nav {
+            background: rgba(15, 15, 15, 0.9);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 31px;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .logo-v { color: white; font-size: 35px; font-weight: 900; position: relative; font-family: 'Oswald'; }
+        .bolt { color: var(--bolt-yellow); position: absolute; left: 14px; top: 2px; font-size: 20px; filter: drop-shadow(0 0 8px rgba(253, 253, 150, 0.8)); }
+        
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary-olive); }
+
+        .search-container { position: relative; display: flex; align-items: center; }
+        #search-input { width: 0; padding: 0; border: none; background: var(--glass); color: white; transition: 0.4s; border-radius: 4px; outline: none; }
+        #search-input.active { width: 180px; padding: 5px 10px; margin-right: 10px; border: 1px solid var(--glass-border); }
+        .search-btn { cursor: pointer; font-size: 18px; }
+
+        .cta-nav { background: var(--primary-olive); color: white; padding: 10px 22px; font-family: 'Oswald'; text-decoration: none; transition: 0.3s; }
+        .cta-nav:hover { background: white; color: var(--black); }
+
+        /* --- SIDE PANEL (EXPANDING) --- */
+        .side-panel { position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 2000; display: flex; flex-direction: column; align-items: flex-end; }
+        .side-item {
+            background: white; color: var(--black); height: 50px; width: 50px;
+            display: flex; align-items: center; justify-content: flex-start;
+            margin-bottom: 2px; cursor: pointer; transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden; text-decoration: none; border-radius: 4px 0 0 4px;
+        }
+        .side-item i { min-width: 50px; text-align: center; font-size: 20px; }
+        .side-item span { font-weight: 700; font-size: 13px; opacity: 0; transition: opacity 0.2s; white-space: nowrap; }
+        .side-item:hover { width: 150px; background: var(--primary-olive); color: white; }
+        .side-item:hover span { opacity: 1; }
+
+        /* --- HERO --- */
+        .hero {
+            height: 85vh;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('https://images.unsplash.com/photo-1712700004723-4adc42a3532f?q=80&w=2000&auto=format&fit=crop') center/cover;
+            display: flex; flex-direction: column; justify-content: center; padding: 0 10%;
+        }
+        .hero h1 { font-size: 68px; line-height: 1.1; margin-bottom: 10px; max-width: 850px; }
+        .hero .tagline { font-size: 26px; color: var(--primary-olive); font-weight: 700; margin-bottom: 20px; }
+        .hero p { max-width: 600px; font-size: 19px; margin-bottom: 40px; color: var(--silver); }
+        .hero-ctas { display: flex; gap: 20px; }
+        
+        .btn-glass {
+            background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-border);
+            color: white; padding: 18px 35px; text-decoration: none; font-family: 'Oswald';
+            display: flex; align-items: center; gap: 12px; transition: 0.3s;
+        }
+        .btn-glass:hover { background: rgba(255,255,255,0.15); border-color: white; }
+        .btn-solid {
+            background: white; color: var(--black); padding: 18px 35px; text-decoration: none;
+            font-family: 'Oswald'; font-weight: 700; transition: 0.3s;
+        }
+        .btn-solid:hover { background: var(--primary-olive); color: white; }
+
+        /* --- PARTNERSHIP & MACHINES --- */
+        .partner-section { padding: 100px 10%; background: #0e0e0e; position: relative; }
+        .engirise-logo-row { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+        .engirise-logo-row img { height: 40px; filter: grayscale(1) brightness(2); }
+        .machine-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 60px; }
+        .machine-card { background: var(--charcoal); border: 1px solid #222; overflow: hidden; transition: 0.4s; }
+        .machine-card:hover { border-color: var(--primary-olive); transform: translateY(-10px); }
+        .machine-img { height: 200px; width: 100%; background-size: cover; background-position: center; border-bottom: 4px solid var(--primary-olive); }
+        .machine-content { padding: 25px; }
+        .machine-content h3 { font-size: 26px; color: var(--primary-olive); margin-bottom: 10px; }
+        .machine-specs { font-size: 13px; color: #888; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 10px 0; margin: 15px 0; }
+        .machine-specs div { display: flex; justify-content: space-between; margin-bottom: 4px; }
+
+        /* --- INDUSTRIES (MAP) --- */
+        .industry-section { padding: 100px 10%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; background: #0f0f0f; align-items: center; }
+        .map-container { position: relative; display: flex; justify-content: center; }
+        #ghana-map { width: 100%; max-width: 450px; fill: #222; stroke: #444; stroke-width: 2px; }
+        .map-region { transition: 0.5s; opacity: 0.2; }
+        .map-region.active { fill: var(--primary-olive); opacity: 1; filter: drop-shadow(0 0 15px var(--primary-olive)); }
+
+        .industry-list { display: flex; flex-direction: column; gap: 15px; }
+        .industry-item { 
+            padding: 25px; background: var(--charcoal); border-left: 4px solid transparent; 
+            cursor: pointer; transition: 0.3s; 
+        }
+        .industry-item:hover, .industry-item.active { border-left-color: var(--primary-olive); background: #222; }
+        .industry-item h3 { margin-bottom: 8px; font-size: 20px; }
+        .industry-item p { font-size: 14px; color: #aaa; }
+
+        /* --- LIFECYCLE (2x2 GRID) --- */
+        .lifecycle-section { padding: 100px 10%; background: #0a0a0a; }
+        .lifecycle-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 20px; margin-top: 50px; }
+        .lifecycle-item { 
+            display: grid; grid-template-columns: 1fr 1fr; background: var(--charcoal); 
+            min-height: 250px; border: 1px solid #222;
+        }
+        .lifecycle-text { padding: 30px; display: flex; flex-direction: column; justify-content: center; }
+        .lifecycle-img { background-size: cover; background-position: center; }
+
+        /* --- ABOUT --- */
+        .about-section { 
+            padding: 100px 10%; display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center; 
+            background: linear-gradient(to right, #0f0f0f, #1a1a1a);
+        }
+        .about-images { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .about-img { height: 300px; background-size: cover; background-position: center; border-radius: 4px; }
+        .about-img.tall { height: 400px; margin-top: -50px; }
+
+        /* --- FAQ --- */
+        section { padding: 100px 10%; border-bottom: 1px solid #1a1a1a; }
+        .faq-item { background: #1a1a1a; margin-bottom: 10px; border: 1px solid #333; }
+        .faq-question { padding: 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-family: 'Oswald'; }
+        .faq-answer { padding: 0 25px; max-height: 0; overflow: hidden; transition: 0.4s ease-out; color: #bbb; }
+        .faq-item.active .faq-answer { padding-bottom: 25px; max-height: 300px; border-top: 1px solid #333; padding-top: 15px; }
+
+        /* --- FOOTER-CTA --- */
+        .footer-cta { display: grid; grid-template-columns: 1.5fr 1fr; background: var(--dark-olive); padding: 0; }
+        .cta-left { padding: 100px 8%; }
+        .cta-right { padding: 100px 8%; background: rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center; }
+        .contact-box { background: rgba(255,255,255,0.1); padding: 25px; display: flex; align-items: center; gap: 20px; margin-bottom: 15px; transition: 0.3s; }
+        .contact-box:hover { background: rgba(255,255,255,0.2); }
+        .contact-box i { font-size: 35px; color: white; }
+
+        /* --- FOOTER --- */
+        footer { padding: 80px 10% 40px; background: #050505; color: #888; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+        .footer-logo { color: white; font-size: 28px; font-weight: 700; font-family: 'Oswald'; margin-bottom: 20px; }
+        .footer-col h4 { color: white; margin-bottom: 20px; font-size: 16px; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; font-size: 14px; transition: 0.3s; cursor: pointer; }
+        .footer-col ul li:hover { color: var(--primary-olive); }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1100px) {
+            .industry-section, .about-section, .lifecycle-grid, .footer-cta, .footer-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 45px; }
+            .lifecycle-item { grid-template-columns: 1fr; }
+            .about-img.tall { margin-top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div><i class="fas fa-phone"></i> +233 XX XXX XXXX | <i class="fas fa-envelope"></i> info@voltamachinery.com</div>
+        <div>Authorized Dealer of <span class="engirise-badge">ENGIRISE</span></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo-container">
+            <div class="logo-v">V<i class="fas fa-bolt bolt"></i></div>
+            <div style="font-family:'Oswald'; font-weight:700; font-size:24px;">VOLTA <span style="font-weight:300; font-size:16px; display:block; margin-top:-10px; color:var(--primary-olive)">MACHINERY</span></div>
+        </div>
+        <div class="nav-links">
+            <a href="#">Inventory</a>
+            <a href="#">Industries</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search machine models...">
+                <i class="fas fa-search search-btn" id="search-trigger"></i>
+            </div>
+            <a href="#" class="cta-nav">Request Quote</a>
+        </div>
+    </nav>
+
+    <!-- SIDE PANEL -->
+    <div class="side-panel">
+        <a href="#" class="side-item" style="border-bottom: 1px solid #eee;"><i class="fab fa-whatsapp" style="color:#25D366"></i><span>WhatsApp Us</span></a>
+        <a href="#" class="side-item" style="border-bottom: 1px solid #eee;"><i class="fas fa-phone-alt"></i><span>Call Sales</span></a>
+        <a href="#" class="side-item"><i class="fas fa-envelope"></i><span>Email Us</span></a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1 class="reveal active">Powering Ghana with High-Performance Machinery</h1>
+        <div class="tagline reveal active">Terrain Ready. Stocked in Accra.</div>
+        <p class="reveal active">Volta Machinery delivers tropicalized heavy equipment for Ghana and West Africa’s toughest job sites. Tarkwa gold mines, Accra urban developments, roadbuilding in Kumasi – we're building nations with relentless power and lightning-fast support.</p>
+        <div class="hero-ctas reveal active">
+            <a href="#" class="btn-glass"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+            <a href="#" class="btn-solid">View Inventory</a>
+        </div>
+    </section>
+
+    <!-- PARTNERSHIP & MACHINES -->
+    <section class="partner-section">
+        <div class="reveal">
+            <div class="engirise-logo-row">
+                <div style="background:var(--engirise-red); color:white; padding:5px 15px; font-weight:900; font-family:'Oswald'">ENGIRISE</div>
+                <div style="height:2px; width:50px; background:var(--primary-olive)"></div>
+                <span style="font-weight:700; font-size:14px; text-transform:uppercase;">Official Ghana Dealer</span>
+            </div>
+            <h2 style="font-size:40px;">Official Engirise Dealer for Ghana</h2>
+            <div style="display:flex; gap:30px; margin-top:15px; color:var(--primary-olive); font-weight:bold; font-size:14px;">
+                <span>FACTORY-BACKED</span> | <span>DIRECT-IMPORTED</span> | <span>CONSISTENT SERVICING</span>
+            </div>
+            <p style="max-width:800px; margin-top:25px; color:#ccc;">Volta Machinery is the exclusive authorized partner for Engirise in Ghana. No third-party middlemen - we provide a direct pipeline from the factory to your job site. Get the latest engineering innovations at the most competitive price points in the market.</p>
+            
+            <div style="margin-top:30px;">
+                <h4 style="color:var(--primary-olive); margin-bottom:15px;">The Tropicalization Advantage</h4>
+                <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                    <span style="font-size:14px; border:1px solid #333; padding:8px 15px;">High-Capacity Cooling Systems</span>
+                    <span style="font-size:14px; border:1px solid #333; padding:8px 15px;">Heavy-Duty Air Filtration</span>
+                    <span style="font-size:14px; border:1px solid #333; padding:8px 15px;">Reinforced Hydraulics</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="machine-grid">
+            <div class="machine-card reveal">
+                <div class="machine-img" style="background-image: url('https://images.unsplash.com/photo-1628645419184-26a1f2757340?q=80&w=800')"></div>
+                <div class="machine-content">
+                    <h3>EN220</h3>
+                    <div class="machine-specs">
+                        <div><span>Operating Wt:</span> <span>23T</span></div>
+                        <div><span>Bucket:</span> <span>1.1m3</span></div>
+                        <div><span>Max Digging:</span> <span>6,480mm</span></div>
+                    </div>
+                    <p>The gold standard for precision earthmoving and quarrying.</p>
+                </div>
+            </div>
+            <div class="machine-card reveal">
+                <div class="machine-img" style="background-image: url('https://images.unsplash.com/photo-1762291270825-0a49ab389d05?q=80&w=800')"></div>
+                <div class="machine-content">
+                    <h3>BL124D</h3>
+                    <div class="machine-specs">
+                        <div><span>Operating Wt:</span> <span>8.2T</span></div>
+                        <div><span>Bucket:</span> <span>1.0/0.3m3</span></div>
+                        <div><span>Engine Power:</span> <span>75kW</span></div>
+                    </div>
+                    <p>The versatile, multi-function machine for urban construction.</p>
+                </div>
+            </div>
+            <div class="machine-card reveal">
+                <div class="machine-img" style="background-image: url('https://images.unsplash.com/photo-1629807473015-41699c4471b5?q=80&w=800')"></div>
+                <div class="machine-content">
+                    <h3>WL50</h3>
+                    <div class="machine-specs">
+                        <div><span>Operating Wt:</span> <span>16.5T</span></div>
+                        <div><span>Bucket:</span> <span>3.0m3</span></div>
+                        <div><span>Engine Power:</span> <span>162kW</span></div>
+                    </div>
+                    <p>High-torque loading for bulk material handling.</p>
+                </div>
+            </div>
+            <div class="machine-card reveal">
+                <div class="machine-img" style="background-image: url('https://images.unsplash.com/photo-1620388640785-892616248ec8?q=80&w=800')"></div>
+                <div class="machine-content">
+                    <h3>FL35</h3>
+                    <div class="machine-specs">
+                        <div><span>Rated Load:</span> <span>3.5T</span></div>
+                        <div><span>Lift Height:</span> <span>3,000mm</span></div>
+                        <div><span>Travel Speed:</span> <span>20km/h</span></div>
+                    </div>
+                    <p>High-efficiency lifting for industrial yards and warehouses.</p>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center; margin-top:50px;"><a href="#" class="btn-solid">Explore Full Inventory</a></div>
+    </section>
+
+    <!-- INDUSTRIES (INTERACTIVE MAP) -->
+    <section class="industry-section">
+        <div class="map-container reveal">
+            <!-- Simplified SVG Ghana Map --        
+            <svg id="ghana-map" viewBox="0 0 400 600">
+                <path d="M150,50 L250,60 L280,150 L300,300 L280,450 L250,550 L100,550 L80,400 L70,250 L100,100 Z" />
+                <!-- Region: North --
+                <path id="region-agri" class="map-region" d="M150,50 L250,60 L270,180 L100,180 Z" />
+                <!-- Region: Central (Kumasi) --
+                <path id="region-civil" class="map-region" d="M100,180 L270,180 L285,320 L95,320 Z" />
+                <!-- Region: Mining Belt (West) --
+                <path id="region-mining" class="map-region" d="M95,320 L180,320 L180,550 L100,550 L80,400 Z" />
+                <!-- Region: Accra/Tema --
+                <path id="region-logistics" class="map-region" d="M220,480 L300,480 L280,550 L220,550 Z" />
+                <!-- Region: Real Estate --
+                <path id="region-realestate" class="map-region" d="M180,320 L285,320 L300,480 L180,480 Z" />
+            </svg>-->
+
+ <svg id="ghana-map" viewBox="0 0 420 640" xmlns="http://www.w3.org/2000/svg">
+        
+        <!-- Base Ghana Shape -->
+        <path
+            id="ghana-outline"
+d="M92,58 L170,60 L210,55 L250,65 L275,45 L290,55 L320,50 L360,65 L375,80 L385,110 L380,140 L390,180 L400,220 L390,260 L405,300 L395,340 L400,380 L405,420 L395,450 L400,480 L415,505 L390,520 L370,530 L330,540 L295,565 L260,590 L220,620 L185,635 L150,625 L120,615 L85,605 L50,600 L30,590 L25,570 L30,530 L40,490 L50,450 L60,410 L70,370 L75,330 L65,290 L75,250 L85,210 L95,170 L85,140 L95,115 L100,100 L80,90 L90,75 L92,65 Z"
+            fill="#1f1f1f"
+            stroke="#ffffff"
+            stroke-width="4"
+        />
+
+        <!-- Northern Agricultural Region -->
+        <path
+            id="region-agri"
+            class="map-region"
+  d="M92,58 L180,62 L250,65 L275,45 L320,50 L360,65 L375,80 L390,140 L400,220 L405,310 L385,340 L325,335 L265,345 L245,285 L220,210 L160,225 L85,240 L95,165 L88,100 Z"
+
+        />
+
+        <!-- Central Civil Engineering Region -->
+        <path
+            id="region-civil"
+            class="map-region"
+      d="M80,200 L180,185 L280,165 L385,185 L395,275 L380,335 L360,390 L345,460 L305,520 L235,545 L165,525 L150,470 L185,435 L225,415 L195,375 L235,345 L145,330 L90,320 L70,280 L75,230 Z"
+
+        />
+
+        <!-- Western Mining Belt -->
+        <path
+            id="region-mining"
+class="map-region"
+d="M35,595 L100,610 L150,585 L165,540 L215,515 L245,505 L275,490 L305,430 L290,380 L280,345 L220,360 L170,375 L135,355 L90,285 L75,345 L65,395 L55,445 L45,495 L35,545 L25,575 Z"
+        />
+
+        <!-- Greater Accra / Tema Logistics -->
+        <path
+            id="region-logistics"
+            class="map-region"
+     d="M300,560 L315,555 L330,545 L345,540 L360,535 L375,530 L385,525 L395,515 L390,500 L380,490 L365,495 L350,505 L335,510 L320,515 L305,525 L295,535 L285,545 L290,555 L300,560 Z"
+
+        />
+
+        <!-- Eastern / Urban Real Estate Growth -->
+        <path
+            id="region-realestate"
+            class="map-region"
+          d="M135,360 L190,375 L245,365 L300,385 L285,435 L315,485 L345,535 L315,560 L275,585 L220,615 L195,595 L180,570 L170,545 L160,510 L165,475 L150,440 L135,410 L145,380 L138,370 Z"
+
+        />
+
+    </svg>
+            
+        </div>
+        <div class="reveal">
+            <h2 style="font-size:38px; margin-bottom:20px;">Driving Ghana’s Economy – Core Industries</h2>
+            <p style="margin-bottom:30px; color:#aaa;">We stock the complete range of industrial machinery – excavators, loaders, forklifts, road machinery, and MEWPs. The Volta goal goes beyond just sell machines - we aim to solve industrial challenges in core West African sectors.</p>
+            
+            <div class="industry-list">
+                <div class="industry-item" data-region="region-mining">
+                    <h3>Mining & Quarrying</h3>
+                    <p>Maximize your ore throughput in bauxite, manganese, and gold extraction. We supply high-availability excavators and graders to Ghana’s mining belts.</p>
+                </div>
+                <div class="industry-item" data-region="region-civil">
+                    <h3>Civil Engineering</h3>
+                    <p>Support the "Year of Roads" initiative. Our durable rollers, graders, and diggers are the backbone of Ghana’s highway expansions.</p>
+                </div>
+                <div class="industry-item" data-region="region-realestate">
+                    <h3>Real Estate Development</h3>
+                    <p>Build the future of Accra and Kumasi. Our compact loaders and backhoes provide the agility needed in tight urban spaces.</p>
+                </div>
+                <div class="industry-item" data-region="region-logistics">
+                    <h3>Warehouse & Logistics</h3>
+                    <p>Optimized scissor and boom lifts for high-intensity operations. Streamline the flow of goods at Tema Port and major hubs.</p>
+                </div>
+                <div class="industry-item" data-region="region-agri">
+                    <h3>Mechanized Agriculture</h3>
+                    <p>Transform rural infrastructure in Northern Ghana and beyond. We provide the machinery necessary to scale production.</p>
+                </div>
+            </div>
+        </div>
+                <div style="margin-top:50px;"><a href="#" class="btn-solid">Browse Industrial Solutions</a></div>
+    </section>
+
+    <!-- LIFECYCLE SUPPORT (2x2) -->
+    <section class="lifecycle-section">
+        <div class="reveal">
+            <h2 style="font-size:40px;">Beyond Equipment: Full Lifecycle Support</h2>
+            <p style="max-width:800px; margin-top:20px; color:#aaa;">Volta Machinery is your zero-downtime partner: from equipment access to full lifecycle support. Our lightning-fast after-market services are the foundation that keeps your machines – and your projects – running.</p>
+        </div>
+
+        <div class="lifecycle-grid">
+            <div class="lifecycle-item reveal">
+                <div class="lifecycle-text">
+                    <h3>Equipment Sales</h3>
+                    <p>Brand-new Engirise excavators, loaders, forklifts, road machinery, and MEWPs stocked in Ghana.</p>
+                </div>
+                <div class="lifecycle-img" style="background-image: url('https://images.unsplash.com/photo-1767187861752-7d0135106962?q=80&w=800')"></div>
+            </div>
+            <div class="lifecycle-item reveal">
+                <div class="lifecycle-img" style="background-image: url('https://images.unsplash.com/photo-1622645636770-11fbf0611463?q=80&w=800')"></div>
+                <div class="lifecycle-text">
+                    <h3>Rental Solutions</h3>
+                    <p>Short-term, long-term, and rent-to-own solutions tailored to project timelines and cash flows.</p>
+                </div>
+            </div>
+            <div class="lifecycle-item reveal">
+                <div class="lifecycle-text">
+                    <h3>Genuine Parts Hub</h3>
+                    <p>No waiting for shipping – reliable stocks of filters, seals, and wear parts within Ghana.</p>
+                </div>
+                <div class="lifecycle-img" style="background-image: url('https://images.unsplash.com/photo-1702058343707-5a9b47ff6f46?q=80&w=800')"></div>
+            </div>
+            <div class="lifecycle-item reveal">
+                <div class="lifecycle-img" style="background-image: url('https://images.unsplash.com/photo-1517089152318-42ec560349c0?q=80&w=800')"></div>
+                <div class="lifecycle-text">
+                    <h3>Field Maintenance</h3>
+                    <p>Volta technicians travel to your site – whether in the Western Region, the North, or wider West Africa.</p>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:50px;"><a href="#" class="btn-solid">Explore All Services</a></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about-section">
+        <div class="about-images reveal">
+            <div class="about-img" style="background-image: url('https://images.unsplash.com/photo-1523660778745-247ed0bcce31?q=80&w=800')"></div>
+            <div class="about-img tall" style="background-image: url('https://images.unsplash.com/photo-1747991018394-f8759580e6bb?q=80&w=800')"></div>
+        </div>
+        <div class="reveal">
+            <h2 style="font-size:40px; margin-bottom:25px;">Built for Ghana – Driven by Transformation</h2>
+            <p>The Volta journey began over five years ago on the red earth of Ghanaian job sites. Based in Accra and serving the wider West African region, we have evolved into a regional equipment powerhouse.</p><br>
+            <p>Volta combines the global engineering excellence of Engirise with boots-on-the-ground expertise and responsiveness. We’re equipping the people who are building the new Africa.</p>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:40px;">
+                <div style="border-top: 2px solid var(--primary-olive); padding-top:15px;">
+                    <h4 style="color:var(--primary-olive)">Global Quality</h4>
+                    <p style="font-size:13px;">Exclusive partnership with Engirise Africa</p>
+                </div>
+                <div style="border-top: 2px solid var(--primary-olive); padding-top:15px;">
+                    <h4 style="color:var(--primary-olive)">Client Support</h4>
+                    <p style="font-size:13px;">Based in Accra for rapid response and support</p>
+                </div>
+                                <div style="border-top: 2px solid var(--primary-olive); padding-top:15px;">
+                    <h4 style="color:var(--primary-olive)">Performance</h4>
+                    <p style="font-size:13px;">Tropicalized specs for safreliable operation</p>
+                </div>
+                                <div style="border-top: 2px solid var(--primary-olive); padding-top:15px;">
+                    <h4 style="color:var(--primary-olive)">Innovation</h4>
+                    <p style="font-size:13px;">Fuel-efficient, electric, and hybrid models</p>
+                </div>
+            </div>
+            <div style="margin-top:40px;"><a href="#" class="btn-solid">Learn about Volta</a></div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+        <div class="reveal">
+            <h2 style="font-size:38px; margin-bottom:40px;">Heavy Machinery in Ghana: Frequency Asked Questions</h2>
+        </div>
+        <div class="faq-container reveal">
+            <div class="faq-item">
+                <div class="faq-question">Can I rent equipment for a 3-month project? <i class="fas fa-plus"></i></div>
+                <div class="faq-answer">Yes, you can rent equipment for a 3-month project. Volta Machinery offers flexible rental terms across the entire fleet of excavators, loaders, MEWPs and more.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What happens if a machine breaks down on-site? <i class="fas fa-plus"></i></div>
+                <div class="faq-answer">Upon machine breakdown, Volta technicians are dispatched immediately with genuine spare parts. We get you back to work within hours, not days.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Are Engirise machines easy to maintain? <i class="fas fa-plus"></i></div>
+                <div class="faq-answer">Yes, Engirise machines are easy to maintain. Their designs prioritize "serviceability" - meaning simple access points for daily checks and robust mechanical systems.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Do you deliver outside Accra? <i class="fas fa-plus"></i></div>
+                <div class="faq-answer">Yes, Volta Machinery serves all 16 regions of Ghana. We also have the logistics capability to support projects across the wider West African borders.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Are your machines built for West African conditions? <i class="fas fa-plus"></i></div>
+                <div class="faq-answer">Yes, all Engirise machines are ‘tropicalized’ to handle West African conditions. They have enhanced cooling systems, filters, and configurations for high heat, dust, and humidity.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="footer-cta">
+        <div class="cta-left reveal">
+            <h2 style="font-size:48px; margin-bottom:20px;">Ready to Power your Next Project?</h2>
+            <p style="margin-bottom:40px; font-size:18px;">Don’t let outdated equipment or slow support stall your progress. Get the machinery you need, backed by the energy and expertise of Volta.</p>
+            <div style="display:flex; gap:20px;">
+                <a href="#" class="btn-solid">View Equipment</a>
+                <a href="#" class="btn-glass" style="background:transparent; border-color:white;">Request Quote &rarr;</a>
+            </div>
+        </div>
+        <div class="cta-right reveal">
+            <h3 style="margin-bottom:25px;">Need Immediate Assistance?</h3>
+            <a href="#" class="contact-box" style="text-decoration:none; color:white;">
+                <i class="fab fa-whatsapp" style="color:#25D366"></i>
+                <div>
+                    <span style="display:block; font-size:12px; text-transform:uppercase; color:#bbb;">WhatsApp Us</span>
+                    <strong style="font-size:20px;">Quick Response</strong>
+                </div>
+            </a>
+            <a href="#" class="contact-box" style="text-decoration:none; color:white;">
+                <i class="fas fa-phone-alt"></i>
+                <div>
+                    <span style="display:block; font-size:12px; text-transform:uppercase; color:#bbb;">Call Us Now</span>
+                    <strong style="font-size:20px;">+233 XX XXX XXXX</strong>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-logo">VOLTA <span style="color:var(--primary-olive)">MACHINERY</span></div>
+                <p style="font-size:14px; line-height:1.6; padding-right:40px;">Volta Machinery supplies and supports tropicalized heavy equipment for construction, mining, and logistics across West Africa. Based in Accra, we combine local responsiveness with factory-backed excellence.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li>Inventory</li>
+                    <li>Industry Solutions</li>
+                    <li>Parts & Service</li>
+                    <li>Rental Plans</li>
+                    <li>About Volta</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Equipment</h4>
+                <ul>
+                    <li>Excavators</li>
+                    <li>Wheel Loaders</li>
+                    <li>Backhoe Loaders</li>
+                    <li>Forklifts</li>
+                    <li>MEWP / Lifts</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li>Terms of Service</li>
+                    <li>Privacy Policy</li>
+                    <li>Rental Agreement</li>
+                    <li>Cookie Policy</li>
+                </ul>
+            </div>
+        </div>
+        <div style="border-top:1px solid #222; padding-top:30px; text-align:center; font-size:12px;">
+            &copy; 2024 Volta Machinery Ltd. Official Authorized Dealer of Engirise. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Reveal on Scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 120;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+
+        // FAQ Toggle
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                item.classList.toggle('active');
+                const icon = item.querySelector('i');
+                icon.classList.toggle('fa-plus'); icon.classList.toggle('fa-minus');
+            });
+        });
+
+        // Search Expand
+        document.getElementById('search-trigger').addEventListener('click', () => {
+            document.getElementById('search-input').classList.toggle('active');
+        });
+
+        // Interactive Map
+        const industryItems = document.querySelectorAll('.industry-item');
+        const mapRegions = document.querySelectorAll('.map-region');
+
+        industryItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const regionId = item.getAttribute('data-region');
+                mapRegions.forEach(reg => reg.classList.remove('active'));
+                document.getElementById(regionId).classList.add('active');
+                industryItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
