@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engirise EN220 Crawler Excavator | Volta Machinery Ghana</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-olive: #6b7a47;
+            --dark-olive: #3d462c;
+            --charcoal: #1a1a1a;
+            --black: #0f0f0f;
+            --silver: #e0e0e0;
+            --engirise-red: #ED1C24;
+            --bolt-yellow: #fdfd96;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--black); color: white; line-height: 1.6; overflow-x: hidden; }
+        h1, h2, h3, h4, .oswald { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- GLOBAL UI COMPONENTS --- */
+        .top-bar { background: #000; color: var(--silver); font-size: 12px; padding: 8px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1001; border-bottom: 1px solid #222; }
+        .engirise-badge { background: var(--engirise-red); color: white; padding: 2px 8px; font-weight: bold; margin-left: 5px; }
+
+ /*       nav { background: rgba(15, 15, 15, 0.9); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 31px; z-index: 1000; backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border); }
+        .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; }
+        .logo-v { color: white; font-size: 35px; font-weight: 900; position: relative; font-family: 'Oswald'; }
+        .bolt { color: var(--bolt-yellow); position: absolute; left: 14px; top: 2px; font-size: 20px; filter: drop-shadow(0 0 8px rgba(253, 253, 150, 0.8)); }
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary-olive); }
+        .cta-nav { background: var(--primary-olive); color: white; padding: 10px 22px; font-family: 'Oswald'; text-decoration: none; transition: 0.3s; }
+*/
+
+        nav {
+            background: rgba(15, 15, 15, 0.9);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 31px;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+      .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; color: inherit; }
+        .logo-v { color: white; font-size: 35px; font-weight: 900; position: relative; font-family: 'Oswald'; }
+        .bolt { color: var(--bolt-yellow); position: absolute; left: 14px; top: 2px; font-size: 20px; filter: drop-shadow(0 0 8px rgba(253, 253, 150, 0.8)); }
+   
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary-olive); }
+
+        .search-container { position: relative; display: flex; align-items: center; }
+        #search-input { width: 0; padding: 0; border: none; background: var(--glass); color: white; transition: 0.4s; border-radius: 4px; outline: none; }
+        #search-input.active { width: 180px; padding: 5px 10px; margin-right: 10px; border: 1px solid var(--glass-border); }
+        .search-btn { cursor: pointer; font-size: 18px; }
+
+        .cta-nav { background: var(--primary-olive); color: white; padding: 10px 22px; font-family: 'Oswald'; text-decoration: none; transition: 0.3s; }
+        .cta-nav:hover { background: white; color: var(--black); }
+
+        .side-panel { position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 2000; display: flex; flex-direction: column; align-items: flex-end; }
+        .side-item { background: white; color: var(--black); height: 50px; width: 50px; display: flex; align-items: center; justify-content: flex-start; margin-bottom: 2px; cursor: pointer; transition: width 0.4s; overflow: hidden; text-decoration: none; border-radius: 4px 0 0 4px; }
+        .side-item i { min-width: 50px; text-align: center; font-size: 20px; }
+        .side-item span { font-weight: 700; font-size: 13px; opacity: 0; transition: opacity 0.2s; white-space: nowrap; }
+        .side-item:hover { width: 150px; background: var(--primary-olive); color: white; }
+        .side-item:hover span { opacity: 1; }
+
+        /* --- HERO SECTION --- */
+        .product-hero { padding: 60px 10%; display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; background: #0e0e0e; }
+        
+        /* Left: Gallery */
+        .gallery-container { display: flex; flex-direction: column; gap: 15px; }
+        .main-img { width: 100%; height: 500px; background: url('https://images.unsplash.com/photo-1747991018394-f8759580e6bb?q=80&w=1200') center/cover; border: 1px solid #333; position: relative; }
+        .stock-badge { position: absolute; top: 20px; left: 20px; background: var(--primary-olive); color: white; padding: 5px 15px; font-weight: 700; font-size: 12px; font-family: 'Oswald'; }
+        .thumb-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .thumb { height: 100px; background-size: cover; background-position: center; border: 1px solid #333; cursor: pointer; transition: 0.3s; }
+        .thumb:hover { border-color: var(--primary-olive); }
+
+        /* Right: Info */
+        .product-info h1 { font-size: 56px; line-height: 1; margin-bottom: 5px; }
+        .category-label { color: var(--engirise-red); font-weight: 700; text-transform: uppercase; font-size: 14px; display: block; margin-bottom: 15px; }
+        .short-desc { color: #aaa; margin-bottom: 25px; border-bottom: 1px solid #222; padding-bottom: 20px; }
+        .brochure-link { color: var(--primary-olive); text-decoration: none; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 30px; }
+        
+        .usp-row { display: flex; gap: 15px; margin-bottom: 30px; }
+        .usp-badge { border: 1px solid #333; padding: 8px 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--silver); display: flex; align-items: center; gap: 6px; }
+        .usp-badge i { color: var(--primary-olive); }
+
+        .hero-specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #333; margin-bottom: 40px; border: 1px solid #333; }
+        .h-spec-item { background: var(--charcoal); padding: 20px; text-align: center; }
+        .h-spec-item strong { display: block; font-size: 24px; font-family: 'Oswald'; color: white; }
+        .h-spec-item span { font-size: 12px; color: #888; text-transform: uppercase; }
+
+        .hero-ctas { display: flex; gap: 15px; }
+        .btn-whatsapp { background: #25D366; color: white; flex: 1; padding: 18px; text-align: center; text-decoration: none; font-family: 'Oswald'; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; }
+        .btn-whatsapp:hover { background: #1eb954; }
+        .btn-quote { background: white; color: var(--black); flex: 1; padding: 18px; text-align: center; text-decoration: none; font-family: 'Oswald'; font-weight: 700; transition: 0.3s; }
+        .btn-quote:hover { background: var(--primary-olive); color: white; }
+
+        /* --- TABS SECTION --- */
+        .tabs-container { padding: 0 10%; background: var(--black); }
+        .tab-nav { display: flex; border-bottom: 1px solid #222; }
+        .tab-btn { padding: 20px 40px; background: none; border: none; color: #666; font-family: 'Oswald'; font-weight: 700; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        .tab-btn.active { color: var(--primary-olive); border-bottom: 3px solid var(--primary-olive); }
+        .tab-content { padding: 60px 0; display: none; }
+        .tab-content.active { display: block; }
+
+        /* Tab 1: Specs */
+        .specs-layout { display: grid; grid-template-columns: 250px 1fr; gap: 40px; }
+        .specs-nav { display: flex; flex-direction: column; gap: 5px; }
+        .s-nav-btn { padding: 15px 20px; background: #111; color: #888; text-align: left; border: none; font-family: 'Oswald'; cursor: pointer; transition: 0.3s; display: flex; justify-content: space-between; align-items: center; }
+        .s-nav-btn.active { background: var(--charcoal); color: var(--primary-olive); }
+        .specs-table { width: 100%; border-collapse: collapse; }
+        .specs-table tr { border-bottom: 1px solid #222; }
+        .specs-table td { padding: 15px; font-size: 14px; }
+        .specs-table td:first-child { color: #888; text-transform: uppercase; width: 40%; }
+        .specs-table td:last-child { color: white; font-weight: 600; text-align: right; }
+
+        /* Tab 2: Key Features (Hover Sync) */
+        .features-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .feature-img-frame { height: 450px; border: 1px solid #333; background-size: cover; background-position: center; transition: 0.5s ease; }
+        .feature-list { display: flex; flex-direction: column; gap: 15px; }
+        .feature-item { padding: 25px; background: #111; border-left: 4px solid transparent; cursor: pointer; transition: 0.3s; }
+        .feature-item:hover { border-left-color: var(--primary-olive); background: #1a1a1a; }
+        .feature-item h3 { color: var(--primary-olive); margin-bottom: 5px; }
+        .feature-item p { font-size: 14px; color: #aaa; }
+
+        /* Tab 3: Applications */
+        .app-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .app-card { background: var(--charcoal); display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #222; }
+        .app-text { padding: 25px; display: flex; flex-direction: column; justify-content: center; }
+        .app-img { background-size: cover; background-position: center; min-height: 200px; }
+
+        /* --- BOTTOM SECTIONS --- */
+        .related-section { padding: 80px 10%; background: #0a0a0a; }
+        .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+        .rel-card { background: var(--charcoal); border: 1px solid #222; padding: 20px; text-align: center; transition: 0.3s; }
+        .rel-card:hover { border-color: var(--primary-olive); }
+        .rel-img { height: 150px; background-size: contain; background-repeat: no-repeat; background-position: center; margin-bottom: 15px; filter: grayscale(1); transition: 0.3s; }
+        .rel-card:hover .rel-img { filter: grayscale(0); }
+
+        .faq-section { padding: 80px 10%; }
+        .faq-item { background: #111; border: 1px solid #222; margin-bottom: 10px; }
+        .faq-q { padding: 20px; cursor: pointer; font-weight: 700; font-family: 'Oswald'; display: flex; justify-content: space-between; }
+        .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: 0.3s; color: #888; }
+        .faq-item.active .faq-a { padding-bottom: 20px; max-height: 200px; border-top: 1px solid #222; padding-top: 15px; }
+
+        /* --- FINAL CTA ---
+        .footer-cta { display: grid; grid-template-columns: 1.5fr 1fr; background: var(--dark-olive); }
+        .cta-left { padding: 80px 10%; }
+        .cta-right { padding: 80px 10%; background: rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center; gap: 15px; }
+        .contact-box { background: rgba(255,255,255,0.1); padding: 20px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; }
+*/
+
+       /* --- BUTTONS --- */
+        .btn-solid {
+            background: white; color: var(--black); padding: 18px 35px; text-decoration: none;
+            font-family: 'Oswald'; font-weight: 700; transition: 0.3s; display: inline-block;
+        }
+        .btn-solid:hover { background: var(--primary-olive); color: white; }
+        .btn-glass {
+            background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-border);
+            color: white; padding: 18px 35px; text-decoration: none; font-family: 'Oswald';
+            display: inline-flex; align-items: center; gap: 12px; transition: 0.3s;
+        }
+        .btn-glass:hover { background: rgba(255,255,255,0.15); border-color: white; }
+        
+        /* --- FOOTER-CTA (REPLICATED) --- */
+        .footer-cta { display: grid; grid-template-columns: 1.5fr 1fr; background: var(--dark-olive); padding: 0; border: none; }
+        .cta-left { padding: 100px 8%; }
+        .cta-right { padding: 100px 8%; background: rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center; }
+        .contact-box { background: rgba(255,255,255,0.1); padding: 25px; display: flex; align-items: center; gap: 20px; margin-bottom: 15px; transition: 0.3s; text-decoration: none; color: white;}
+        .contact-box:hover { background: rgba(255,255,255,0.2); }
+        .contact-box i { font-size: 35px; color: white; }
+
+        footer { padding: 60px 10%; background: #050505; border-top: 1px solid #222; text-align: center; font-size: 12px; color: #555; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div><i class="fas fa-phone"></i> +233 XX XXX XXXX | <i class="fas fa-envelope"></i> info@voltamachinery.com</div>
+        <div>Authorized Dealer of <span class="engirise-badge">ENGIRISE</span></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav>
+        <a href="index.html" class="logo-container">
+            <div class="logo-v">V<i class="fas fa-bolt bolt"></i></div>
+            <div style="font-family:'Oswald'; font-weight:700; font-size:24px;">VOLTA <span style="font-weight:300; font-size:16px; display:block; margin-top:-10px; color:var(--primary-olive)">MACHINERY</span></div>
+        </a>
+        <div class="nav-links">
+            <a href="#">Inventory</a>
+            <a href="#">Industries</a>
+            <a href="#">Services</a>
+            <a href="about_v1.html">About</a>
+            <a href="#">Contact</a>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search machine models...">
+                <i class="fas fa-search search-btn" id="search-trigger"></i>
+            </div>
+            <a href="#" class="cta-nav">Request Quote</a>
+        </div>
+    </nav>
+
+    <!-- SIDE PANEL -->
+    <div class="side-panel">
+        <a href="#" class="side-item" style="border-bottom: 1px solid #eee;"><i class="fab fa-whatsapp" style="color:#25D366"></i><span>WhatsApp Us</span></a>
+        <a href="#" class="side-item" style="border-bottom: 1px solid #eee;"><i class="fas fa-phone-alt"></i><span>Call Sales</span></a>
+        <a href="#" class="side-item"><i class="fas fa-envelope"></i><span>Email Us</span></a>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="product-hero">
+        <div class="gallery-container">
+            <div class="main-img" id="main-product-img">
+                <span class="stock-badge">AVAILABLE: ACCRA YARD</span>
+            </div>
+            <div class="thumb-row">
+                <div class="thumb" style="background-image: url('https://images.unsplash.com/photo-1747991018394-f8759580e6bb?q=80&w=400')" onclick="changeMainImg(this)"></div>
+                <div class="thumb" style="background-image: url('https://images.unsplash.com/photo-1759579471642-8295d40db07c?q=80&w=400')" onclick="changeMainImg(this)"></div>
+                <div class="thumb" style="background-image: url('https://images.unsplash.com/photo-1649807533255-bbc9c9fb7d77?q=80&w=400')" onclick="changeMainImg(this)"></div>
+                <div class="thumb" style="background-image: url('https://images.unsplash.com/photo-1628487749130-2d41acb1802a?q=80&w=400')" onclick="changeMainImg(this)"></div>
+            </div>
+        </div>
+        <div class="product-info">
+            <span class="category-label">Diesel Crawler Excavator</span>
+            <h1>Engirise EN220</h1>
+            <p class="short-desc">Engineered for reliability, the EN220 pairs a high-torque engine and durable frame with a cabin that prioritizes operator comfort and control. It efficiently tackles demanding tasks while managing operating costs and maximizing productivity across Ghana's toughest terrains.</p>
+            
+            <a href="#" class="brochure-link"><i class="fas fa-file-download"></i> Download Full Technical Brochure (PDF)</a>
+
+            <div class="usp-row">
+                <div class="usp-badge"><i class="fas fa-sun"></i> Tropicalized</div>
+                <div class="usp-badge"><i class="fas fa-gears"></i> Genuine Parts</div>
+                <div class="usp-badge"><i class="fas fa-tools"></i> 24/7 Service</div>
+            </div>
+
+            <div class="hero-specs">
+                <div class="h-spec-item">
+                    <span>Operating Weight</span>
+                    <strong>23,000 kg</strong>
+                </div>
+                <div class="h-spec-item">
+                    <span>Engine Power</span>
+                    <strong>124 kW</strong>
+                </div>
+                <div class="h-spec-item">
+                    <span>Bucket Capacity</span>
+                    <strong>1.1 m³</strong>
+                </div>
+            </div>
+
+            <div class="hero-ctas">
+                <a href="#" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp Sales</a>
+                <a href="#" class="btn-quote">Request Formal Quote</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TABS SECTION -->
+    <section class="tabs-container">
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="openTab(event, 'specs')">Technical Specifications</button>
+            <button class="tab-btn" onclick="openTab(event, 'features')">Key Features</button>
+            <button class="tab-btn" onclick="openTab(event, 'apps')">Industry Applications</button>
+        </div>
+
+        <!-- TAB 1: SPECS -->
+        <div id="specs" class="tab-content active">
+            <div class="specs-layout">
+                <div class="specs-nav">
+                    <button class="s-nav-btn active" onclick="showSpecTable('general', this)">General <i class="fas fa-chevron-right"></i></button>
+                    <button class="s-nav-btn" onclick="showSpecTable('engine', this)">Engine <i class="fas fa-chevron-right"></i></button>
+                    <button class="s-nav-btn" onclick="showSpecTable('mobility', this)">Mobility <i class="fas fa-chevron-right"></i></button>
+                    <button class="s-nav-btn" onclick="showSpecTable('hydraulic', this)">Hydraulic System <i class="fas fa-chevron-right"></i></button>
+                    <button class="s-nav-btn" onclick="showSpecTable('range', this)">Operating Range <i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="specs-table-container">
+                    <table class="specs-table" id="spec-display-table">
+                        <tr><td>Model</td><td>EN220</td></tr>
+                        <tr><td>Operating Weight</td><td>23,000 kg</td></tr>
+                        <tr><td>Bucket Capacity</td><td>1.1 m³</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: FEATURES (Hover Sync) -->
+        <div id="features" class="tab-content">
+            <div class="features-layout">
+                <div class="feature-img-frame" id="feature-zoom-img" style="background-image: url('https://images.unsplash.com/photo-1747991018394-f8759580e6bb?q=80&w=800')"></div>
+                <div class="feature-list">
+                    <div class="feature-item" onmouseover="syncFeatureImg('https://images.unsplash.com/photo-1630061712710-2539eb457c55?q=80&w=800')">
+                        <h3>Unshakable Stability</h3>
+                        <p>Wide tracks ensure a solid stance on unstable terrain, and a self-adjusting tension system extends undercarriage life.</p>
+                    </div>
+                    <div class="feature-item" onmouseover="syncFeatureImg('https://images.unsplash.com/photo-1591486085897-f433f05e7aed?q=80&w=800')">
+                        <h3>Intelligent Diesel Power</h3>
+                        <p>High-torque engine delivering reliable performance with lower fuel consumption, specifically tuned for West African diesel grades.</p>
+                    </div>
+                    <div class="feature-item" onmouseover="syncFeatureImg('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800')">
+                        <h3>Operator-First Cabin</h3>
+                        <p>Vibration-dampened cabin with ergonomic controls minimizes fatigue, enhancing precision and safety during long shifts.</p>
+                    </div>
+                    <div class="feature-item" onmouseover="syncFeatureImg('https://images.unsplash.com/photo-1778512925037-f6341e69f6d4?q=80&w=800')">
+                        <h3>Tropicalized Cooling</h3>
+                        <p>Enhanced radiators and oversized fans designed to maintain peak hydraulic pressure even in 45°C ambient heat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: APPLICATIONS -->
+        <div id="apps" class="tab-content">
+            <div class="app-grid">
+                <div class="app-card">
+                    <div class="app-text">
+                        <h3>Mining & Quarrying</h3>
+                        <p>Relentless power for bauxite and gold extraction in Tarkwa and Obuasi belts.</p>
+                    </div>
+                    <div class="app-img" style="background-image: url('https://images.unsplash.com/photo-1649829726631-fcd218631ab5?q=80&w=600')"></div>
+                </div>
+                <div class="app-card">
+                                    <div class="app-img" style="background-image: url('https://images.unsplash.com/photo-1517089152318-42ec560349c0?q=80&w=600')"></div>
+                    <div class="app-text">
+                        <h3>Road Construction</h3>
+                        <p>The backbone for highway expansions and heavy drainage projects across the region.</p>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <div class="app-text">
+                        <h3>Bulk Earthmoving</h3>
+                        <p>High-volume bucket capacity for large-scale land prep and industrial development.</p>
+                    </div>
+                    <div class="app-img" style="background-image: url('https://images.unsplash.com/photo-1630288214173-a119cf823388?q=80&w=600')"></div>
+                </div>
+                <div class="app-card">
+                                    <div class="app-img" style="background-image: url('https://images.unsplash.com/photo-1649807533255-bbc9c9fb7d77?q=80&w=600')"></div>
+                    <div class="app-text">
+                        <h3>Irrigation & Dams</h3>
+                        <p>Deep digging capability for rural infrastructure and water management projects.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RELATED MACHINES -->
+    <section class="related-section">
+        <h2 class="reveal">Recommended Comparisons</h2>
+        <div class="related-grid reveal">
+            <div class="rel-card">
+                <div class="rel-img" style="background-image: url('https://images.unsplash.com/photo-1747991018394-f8759580e6bb?q=80&w=300')"></div>
+                <h3>Engirise EN150</h3>
+                <p>15-Ton Compact Excavator</p>
+                <a href="#" style="color:var(--primary-olive); font-size:12px; font-weight:700;">View Model &rarr;</a>
+            </div>
+            <div class="rel-card">
+                <div class="rel-img" style="background-image: url('https://images.unsplash.com/photo-1747991018394-f8759580e6bb?q=80&w=300')"></div>
+                <h3>Engirise EN300</h3>
+                <p>30-Ton Heavy Earthmover</p>
+                <a href="#" style="color:var(--primary-olive); font-size:12px; font-weight:700;">View Model &rarr;</a>
+            </div>
+            <div class="rel-card">
+                <div class="rel-img" style="background-image: url('https://images.unsplash.com/photo-1586161148512-64a1b3dac527?q=80&w=300')"></div>
+                <h3>Engirise BL124D</h3>
+                <p>Multi-purpose Backhoe</p>
+                <a href="#" style="color:var(--primary-olive); font-size:12px; font-weight:700;">View Model &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <h2 class="reveal">Technical FAQs</h2>
+        <div class="reveal" style="margin-top:30px;">
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">How does the EN220 handle high-sulfur diesel in Ghana? <i class="fas fa-plus"></i></div>
+                <div class="faq-a">The EN220 features multi-stage fuel filtration with oversized water separators specifically designed for local diesel grades, protecting the high-pressure common rail system from damage.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">Can I rent the EN220 for a 3-month mining contract? <i class="fas fa-plus"></i></div>
+                <div class="faq-a">Yes. Volta Machinery offers flexible short-term rentals and rent-to-own plans for contractors in the Western and Ashanti mining belts.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)">What is the spare parts availability for this model? <i class="fas fa-plus"></i></div>
+                <div class="faq-a">We maintain a comprehensive stock of genuine Engirise filters, seals, and undercarriage parts at our Accra hub for immediate dispatch.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA 
+    <section class="footer-cta">
+        <div class="cta-left reveal">
+            <h2 style="font-size:42px;">Ready to Power your Next Project?</h2>
+            <p style="margin-top:15px;">The EN220 delivers power, comfort, and durability on tough terrain, offering a reliable partnership in every demanding project you undertake.</p>
+        </div>
+        <div class="cta-right reveal">
+            <a href="#" class="contact-box" style="background:#25D366">
+                <i class="fab fa-whatsapp"></i>
+                <div><strong>WhatsApp Us</strong><span> Get Price & Lead Times</span></div>
+            </a>
+            <a href="#" class="contact-box">
+                <i class="fas fa-phone-alt"></i>
+                <div><strong>Call Sales Now</strong><span> Talk to an Expert</span></div>
+            </a>
+        </div>
+    </section>-->
+
+        <!-- FINAL CTA -->
+    <section class="footer-cta">
+        <div class="cta-left reveal">
+            <h2 style="font-size:48px; margin-bottom:20px;">Ready to Power your Next Project?</h2>
+            <p style="margin-bottom:40px; font-size:18px;">The EN220 delivers power, comfort, and durability on tough terrain, offering a reliable partnership in every demanding project you undertake.</p>
+            <div style="display:flex; gap:20px;">
+                <a href="#" class="btn-solid">Other Equipment</a>
+                <a href="#" class="btn-glass" style="background:transparent; border-color:white;">Request Quote &rarr;</a>
+            </div>
+        </div>
+        <div class="cta-right reveal">
+            <h3 style="margin-bottom:25px;">Need Immediate Assistance?</h3>
+            <a href="#" class="contact-box" style="text-decoration:none; color:white;">
+                <i class="fab fa-whatsapp" style="color:#25D366"></i>
+                <div>
+                    <span style="display:block; font-size:12px; text-transform:uppercase; color:#bbb;">WhatsApp Us</span>
+                    <strong style="font-size:20px;">Get Price & Lead Times</strong>
+                </div>
+            </a>
+            <a href="#" class="contact-box" style="text-decoration:none; color:white;">
+                <i class="fas fa-phone-alt"></i>
+                <div>
+                    <span style="display:block; font-size:12px; text-transform:uppercase; color:#bbb;">Talk to an Expert</span>
+                    <strong style="font-size:20px;">+233 XX XXX XXXX</strong>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 Volta Machinery Ltd. Official Authorized Dealer of Engirise. All Rights Reserved.
+    </footer>
+
+    <script>
+        // Gallery Swap
+        function changeMainImg(el) {
+            const main = document.getElementById('main-product-img');
+            main.style.backgroundImage = el.style.backgroundImage;
+        }
+
+        // Tab Switching
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) { tabcontent[i].classList.remove("active"); }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) { tablinks[i].classList.remove("active"); }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Spec Table Swap
+        const specData = {
+            general: [["Model", "EN220"], ["Operating Weight", "23,000 kg"], ["Bucket Capacity", "1.1 m³"]],
+            engine: [["Rated Power", "124 kW / 2050 rpm"], ["Engine Type", "Turbocharged Diesel"]],
+            mobility: [["Travel Speed", "3.8 - 4.2 km/h"], ["Gradeability", "30°"], ["Swing Speed", "11 - 13 rpm"]],
+            hydraulic: [["Working Pressure", "34 Mpa"], ["Control Valve", "Parker"], ["Swing Motor", "Strong (Sunjin)"]],
+            range: [["Max Digging Depth", "6,480 mm"], ["Max Digging Radius", "9,850 mm"], ["Max Dumping Height", "6,730 mm"]]
+        };
+
+        function showSpecTable(cat, el) {
+            const table = document.getElementById('spec-display-table');
+            const btns = document.querySelectorAll('.s-nav-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            
+            table.innerHTML = specData[cat].map(row => `<tr><td>${row[0]}</td><td>${row[1]}</td></tr>`).join('');
+        }
+
+        // Feature Hover Sync
+        function syncFeatureImg(url) {
+            document.getElementById('feature-zoom-img').style.backgroundImage = `url('${url}')`;
+        }
+
+        // FAQ Toggle
+        function toggleFaq(el) {
+            el.parentElement.classList.toggle('active');
+            const icon = el.querySelector('i');
+            icon.classList.toggle('fa-plus'); icon.classList.toggle('fa-minus');
+        }
+
+        // Reveal logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(r => {
+                if (r.getBoundingClientRect().top < window.innerHeight - 100) r.classList.add("active");
+            });
+        }
+        window.addEventListener("scroll", reveal);
+        window.onload = reveal;
+
+        // Search Trigger
+        document.getElementById('search-trigger').onclick = function() {
+            document.getElementById('search-input').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
